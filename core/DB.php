@@ -23,4 +23,9 @@ class DB
 
         $this->entityManager = new EntityManager($connection);
     }
+
+    public function entityManager(): EntityManager
+    {
+        return $this->entityManager();
+    }
 }

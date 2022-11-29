@@ -41,7 +41,7 @@ class App
             ]
         );
 
-        // TODO: add db booting
+        // TODO: add db booting via singleton
         return $this;
     }
 
