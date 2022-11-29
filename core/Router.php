@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace core;
 
 use App\Exceptions\RouteNotFoundException;
+use core\Routing\Route;
 use DI\Container;
 use DI\DependencyException;
 use DI\NotFoundException;
@@ -13,11 +14,28 @@ final class Router
 {
     private array $routes = [];
 
-    /**
-     * @param Container $container
-     */
     public function __construct(private readonly Container $container)
     {
+    }
+
+    /**
+     * @throws \ReflectionException
+     */
+    public function registerRoutesFromControllerAttributes(array $controllers): void
+    {
+        foreach($controllers as $controller) {
+            $reflectionController = new \ReflectionClass($controller);
+
+            foreach($reflectionController->getMethods() as $method) {
+                $attributes = $method->getAttributes(Route::class, \ReflectionAttribute::IS_INSTANCEOF);
+
+                foreach($attributes as $attribute) {
+                    $route = $attribute->newInstance();
+
+                    $this->register($route->method, $route->routePath, [$controller, $method->getName()]);
+                }
+            }
+        }
     }
 
     public function register(string $requestMethod, string $route, callable|array $action): self
@@ -52,7 +70,7 @@ final class Router
         $route = explode('?', $requestUri)[0];
         $action = $this->routes[$requestMethod][$route] ?? null;
 
-        if (!$action) {
+        if (! $action) {
             throw new RouteNotFoundException();
         }
 

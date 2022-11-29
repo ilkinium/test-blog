@@ -3,7 +3,9 @@
     "php-di/php-di": "^6.4",
     "vlucas/phpdotenv": "^5.5",
     "opis/orm": "^1.0",
-    "twig/twig": "^3.0"
+    "twig/twig": "^3.0",
+    "psr/http-message": "^1.0",
+    "psr/http-server-middleware": "^1.0"
   },
   "autoload": {
     "psr-4": {
