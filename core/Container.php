@@ -7,9 +7,10 @@ namespace core;
 use App\Exceptions\ContainerException;
 use App\Exceptions\ContainerNotFoundException;
 use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
-final class Container implements \Psr\Container\ContainerInterface
+final class Container implements ContainerInterface
 {
     private array $entries = [];
 
